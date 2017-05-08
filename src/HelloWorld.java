@@ -7,7 +7,6 @@ public class HelloWorld
 		System.out.println("Hello Java 8");
 		
 		System.out.println("Java version: " + System.getProperty("java.version"));
-
 	}
 
 }
