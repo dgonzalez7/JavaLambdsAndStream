@@ -1,10 +1,12 @@
 package coreservlets.transform;
 
+import java.util.function.Function;
+
 public class Utils 
 {
-	public static String transform(String s, StringFunction f)
+	public static <T, R> R transform(T value, Function<T, R> f)
 	{
-		return(f.applyFunction(s));
+		return(f.apply(value));
 	}
 	
 	public static String makeExciting(String s)

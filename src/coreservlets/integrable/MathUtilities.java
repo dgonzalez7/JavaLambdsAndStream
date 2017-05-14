@@ -1,5 +1,7 @@
 package coreservlets.integrable;
 
+import java.util.function.DoubleUnaryOperator;
+
 /** A numerical integration routine. This is the same in EVERY way
  *  as it would have been in Java 7. The difference in Java 8 is
  *  in the code that *calls* integrate or integrationTest.
@@ -33,10 +35,28 @@ public class MathUtilities {
     return(sum);
   }
   
-  public static void integrationTest(Integrable function, double x1, double x2) {
+  public static double integrate2(DoubleUnaryOperator function, double x1, double x2, int numSlices) {
+	    if (numSlices < 1) {
+	      numSlices = 1;
+	    }
+	    if (x2 < x1) {
+	      double temp = x1;
+	      x1 = x2;
+	      x2 = temp;
+	    }
+	    double delta = (x2 - x1)/numSlices;
+	    double start = x1 + delta/2;
+	    double sum = 0;
+	    for(int i=0; i<numSlices; i++) {
+	      sum += delta*function.applyAsDouble(start + delta*i);
+	    }
+	    return(sum);
+	  }
+  
+  public static void integrationTest(DoubleUnaryOperator function, double x1, double x2) {
     for(int i=1; i<7; i++) {
       int numSlices = (int)Math.pow(10, i);
-      double result = MathUtilities.integrate(function, x1, x2, numSlices);
+      double result = MathUtilities.integrate2(function, x1, x2, numSlices);
       System.out.printf("  For numSlices =%,10d result = %,.8f%n", numSlices, result);
     }
   }
